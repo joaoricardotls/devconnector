@@ -5,6 +5,10 @@ import { LandingPage } from './components/LandingPage';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
 
+// REDUX
+import { Provider } from 'react-redux';
+import store from "./store";
+
 // TEST
 import { TestComponent } from "./components/TestComponent";
 
@@ -18,17 +22,19 @@ library.add(faCode, faDoorOpen, faSignInAlt);
 
 const App = () => {
     return (
-    <Router>
-        <>
-            <Navigation/>
-            
-            <Switch>
-                <Route exact path="/" component={ LandingPage }/>
-                <Route exact path="/login" component={ Login }/>
-                <Route exact path="/register" component={ Register }/>
-            </Switch>
-        </>
-    </Router>
+    <Provider store={ store }>
+        <Router>
+            <>
+                <Navigation/>
+
+                <Switch>
+                    <Route exact path="/" component={ LandingPage }/>
+                    <Route exact path="/login" component={ Login }/>
+                    <Route exact path="/register" component={ Register }/>
+                </Switch>
+            </>
+        </Router>
+    </Provider>
     )
 }
 

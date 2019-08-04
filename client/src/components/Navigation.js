@@ -33,7 +33,7 @@ export const Navigation = () => {
                         <NavLink to="/login"
                                  className="nav-link">
                             <FontAwesomeIcon icon="door-open"/>
-                            <span style={{marginLeft: "0.5rem"}}>Login</span>
+                            <span style={{marginLeft: "0.5rem"}}>Log In</span>
                         </NavLink>
                     </Nav.Item>
 
