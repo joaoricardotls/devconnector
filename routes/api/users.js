@@ -43,7 +43,7 @@ router.post('/', [
             email,
             avatar,
             password
-        })
+        });
 
         // Encrypt password
         const salt = await bcrypt.genSalt(10);
@@ -67,7 +67,7 @@ router.post('/', [
             }
         );
 
-        res.send('User registered');
+        //res.send('User registered');
     } catch(err) {
         console.error(err.message);
         res.status(500).send('Server Error');
