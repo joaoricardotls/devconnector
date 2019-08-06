@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/auth';
 import { Container, Button, Form } from "react-bootstrap";
 
-export const Login = () => {
+const Login = ({ isAuthenticated, login }) => {
 
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
+
+    const { email, password } = formData;
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -18,8 +23,13 @@ export const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('User logged in');
+        login(email, password);
     };
+
+    // Redirect if logged in
+    if (isAuthenticated) {
+        return <Redirect to="/dashboard"/>
+    }
 
     return (
         <Container className="pt-5">
@@ -69,3 +79,18 @@ export const Login = () => {
         </Container>
     );
 };
+
+Login.propTypes = {
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(
+    mapStateToProps, {
+        login
+    }
+)(Login);

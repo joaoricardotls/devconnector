@@ -1,12 +1,16 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import {
     Container,
     Jumbotron,
     Button
 } from "react-bootstrap";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export const LandingPage = () => {
+const LandingPage = ({ isAuthenticated }) => {
+
+    if (isAuthenticated) return <Redirect to="/dashboard"/>;
 
     return (
         <Container>
@@ -39,3 +43,13 @@ export const LandingPage = () => {
         </Container>
     );
 };
+
+LandingPage.propTypes = {
+    isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps)(LandingPage);
