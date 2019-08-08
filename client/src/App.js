@@ -9,6 +9,9 @@ import Register from './components/auth/Register';
 import AlertComponent from "./components/AlertComponent";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile/CreateProfile";
+import EditProfile from "./components/profile/EditProfile";
+import AddEducation from './components/profile/AddEducation';
+import AddExperience from './components/profile/AddExperience';
 import PrivateRoute from './components/routing/PrivateRoute';
 
 // Redux
@@ -66,11 +69,22 @@ const App = () => {
                 <AlertComponent/>
 
                 <Switch>
-                    <Route exact path="/" component={ LandingPage }/>
-                    <Route exact path="/login" component={ Login }/>
-                    <Route exact path="/register" component={ Register }/>
-                    <PrivateRoute exact path="/dashboard" component={ Dashboard }/>
-                    <PrivateRoute exact path="/create-profile" component={ CreateProfile }/>
+                    <Route exact path="/"
+                           component={ LandingPage }/>
+                    <Route exact path="/login"
+                           component={ Login }/>
+                    <Route exact path="/register"
+                           component={ Register }/>
+                    <PrivateRoute exact path="/dashboard"
+                                  component={ Dashboard }/>
+                    <PrivateRoute exact path="/create-profile"
+                                  component={ CreateProfile }/>
+                    <PrivateRoute exact path="/edit-profile"
+                                  component={ EditProfile }/>
+                    <PrivateRoute exact path="/add-experience"
+                                  component={ AddExperience }/>
+                    <PrivateRoute exact path="/add-education"
+                                  component={ AddEducation }/>
                 </Switch>
                 
         </Router>

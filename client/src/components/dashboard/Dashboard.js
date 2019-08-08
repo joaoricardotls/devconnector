@@ -1,10 +1,20 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Container, Row, Button } from 'react-bootstrap';
-import SpinnerComponent from "./SpinnerComponent";
+
 import { connect } from 'react-redux';
 import { getCurrentProfile } from "../../actions/profile";
+
+import DashboardButtons from './DashboardButtons';
+import Experience from './Experience';
+import Education from './Education';
+import SpinnerComponent from "./SpinnerComponent";
+
+import {
+    Container,
+    Row,
+    Button
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Dashboard = ({
@@ -20,7 +30,7 @@ const Dashboard = ({
 
     useEffect(() => {
         getCurrentProfile();
-    }, [])
+    }, []);
 
     return loading && profile === null ? <SpinnerComponent/> : (
 
@@ -37,17 +47,15 @@ const Dashboard = ({
             </Row>
 
             <Row className="text-center">
-                <h4 className="mx-auto mt-4 text-primary">
+                <h4 className="mx-auto mt-4 text-success">
                     Welcome{ user && `, ${user.name}` }
                 </h4>
             </Row>
             {
                 profile !== null ?
 
-                    <Row className="text-center mt-5">
-                        <span className="mx-auto">You already have a profile</span>
-                    </Row>
-                                :
+                    <DashboardButtons/>     :
+
                     <>
                     <Row className="text-center mt-5">
                         <span className="mx-auto">You have not yet set up a profile</span>
@@ -63,6 +71,11 @@ const Dashboard = ({
                     </Row>
                     </>
             }
+
+            <Experience/>
+
+            <Education/>
+
         </Container>
     );
 };

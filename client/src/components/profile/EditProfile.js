@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
@@ -11,23 +11,32 @@ import {
     Col
 } from 'react-bootstrap';
 import BrandComponent from './BrandComponent';
-import { createProfile } from "../../actions/profile";
+import SpinnerComponent from "../dashboard/SpinnerComponent";
+import { createProfile, getCurrentProfile } from "../../actions/profile";
 
-const CreateProfile = ({ createProfile, history }) => {
+const EditProfile = ({
+        profile: {
+            profile,
+            loading
+        },
+        createProfile,
+        getCurrentProfile,
+        history
+    }) => {
 
     const [formData, setFormData] = useState({
-        company : '',
-        website : '',
-        location : '',
-        status : '',
-        skills : '',
-        githubusername : '',
-        bio : '',
-        twitter : '',
-        facebook : '',
+        company: '',
+        website: '',
+        location: '',
+        status: '',
+        skills: '',
+        githubusername: '',
+        bio: '',
+        twitter: '',
+        facebook: '',
         linkedin: '',
         youtube: '',
-        instagram : ''
+        instagram: ''
     });
 
     const {
@@ -47,6 +56,25 @@ const CreateProfile = ({ createProfile, history }) => {
 
     const [socialMedia, setSocialMedia] = useState(false);
 
+    useEffect(() => {
+        getCurrentProfile();
+        let profileData = {
+            company: loading || !profile.company ? '' : profile.company,
+            website: loading || !profile.website ? '' : profile.website,
+            location: loading || !profile.location ? '' : profile.location,
+            status: loading || !profile.status ? '' : profile.status,
+            skills: loading || !profile.skills ? '' : profile.skills.join(','),
+            githubusername: loading || !profile.githubusername ? '' : profile.githubusername,
+            bio: loading || !profile.bio ? '' : profile.bio,
+            twitter: loading || !profile.social ? '' : profile.social.twitter ? profile.social.twitter : '',
+            facebook: loading || !profile.social ? '' : profile.social.facebook ? profile.social.facebook : '',
+            linkedin: loading || !profile.social ? '' : profile.social.linkedin ? profile.social.linkedin : '',
+            youtube: loading || !profile.social ? '' : profile.social.youtube ? profile.social.youtube : '',
+            instagram: loading || !profile.social ? '' : profile.social.instagram ? profile.social.instagram : ''
+        };
+        setFormData(profileData);
+    }, [loading]);
+
     const handleChange = (event) => {
         event.preventDefault();
         let newData = { ...formData }
@@ -56,25 +84,25 @@ const CreateProfile = ({ createProfile, history }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        createProfile(formData, history);
+        createProfile(formData, history, true);
         window.scrollTo(0,0);
     };
 
     const handleReset = (event) => {
         event.preventDefault();
         let newData = {
-            company: '',
-            website: '',
-            location: '',
-            status: '',
-            skills: '',
-            githubusername: '',
-            bio: '',
-            twitter: '',
-            facebook: '',
+            company : '',
+            website : '',
+            location : '',
+            status : '',
+            skills : '',
+            githubusername : '',
+            bio : '',
+            twitter : '',
+            facebook : '',
             linkedin: '',
             youtube: '',
-            instagram: ''
+            instagram : ''
         };
         setFormData(newData);
     };
@@ -84,14 +112,14 @@ const CreateProfile = ({ createProfile, history }) => {
         setSocialMedia(state => !state);
     };
 
-    return (
+    return loading && profile === null ? <SpinnerComponent/> : (
 
         <Container className="py-5">
 
-            <h1 className="text-center mb-4">Create Your Profile</h1>
+            <h1 className="text-center mb-4">Edit Your Profile</h1>
 
             <Row className="text-center my-4">
-                <h5 className="mx-auto">Let's get some information to make your profile stand out!</h5>
+                <h5 className="mx-auto">Add information to make your profile stand out!</h5>
             </Row>
 
             <Form onSubmit={ e => handleSubmit(e) }
@@ -321,12 +349,18 @@ const CreateProfile = ({ createProfile, history }) => {
     );
 };
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
     createProfile: PropTypes.func.isRequired,
+    getCurrentProfile: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+    profile: state.profile
+})
+
 export default connect(
-    null, {
-        createProfile
+    mapStateToProps, {
+        createProfile,
+        getCurrentProfile
     }
-)(withRouter(CreateProfile));
+)(withRouter(EditProfile));
