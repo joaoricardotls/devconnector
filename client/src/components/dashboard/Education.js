@@ -101,7 +101,7 @@ const Education = ({ education, deleteEducation, history }) => {
         deleteEducation(id, history);
     };
 
-    return (
+    return education.length > 0 ? (
         <Row className="my-5">
             <h3>Education</h3>
             <Table bordered className="mt-3 mb-5">
@@ -131,7 +131,7 @@ const Education = ({ education, deleteEducation, history }) => {
                 }
             </Modal>
         </Row>
-    );
+    ) : null;
 };
 
 Education.propTypes = {
@@ -140,7 +140,7 @@ Education.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    education: state.profile.profile.education
+    education: state.profile.profile === null ? [] : state.profile.profile.education
 });
 
 export default connect(

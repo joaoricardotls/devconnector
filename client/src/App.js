@@ -9,6 +9,7 @@ import Register from './components/auth/Register';
 import AlertComponent from "./components/AlertComponent";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile/CreateProfile";
+import Profiles from "./components/profile/Profiles";
 import EditProfile from "./components/profile/EditProfile";
 import AddEducation from './components/profile/AddEducation';
 import AddExperience from './components/profile/AddExperience';
@@ -24,6 +25,8 @@ import setAuthToken from "./utilities/setAuthToken";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faUser,
+    faUserMinus,
+    faUsers,
     faDoorOpen,
     faSignInAlt,
     faCode,
@@ -39,6 +42,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 library.add(
     faUser,
+    faUsers,
+    faUserMinus,
     faDoorOpen,
     faSignInAlt,
     faCode,
@@ -75,6 +80,8 @@ const App = () => {
                            component={ Login }/>
                     <Route exact path="/register"
                            component={ Register }/>
+                    <Route exact path="/profiles"
+                           component={ Profiles }/>
                     <PrivateRoute exact path="/dashboard"
                                   component={ Dashboard }/>
                     <PrivateRoute exact path="/create-profile"

@@ -101,7 +101,7 @@ const Experience = ({ experience, deleteExperience, history }) => {
         deleteExperience(id, history);
     };
 
-    return (
+    return experience.length > 0 ? (
         <Row className="my-5">
 
             <h3>Working Experiences</h3>
@@ -134,7 +134,7 @@ const Experience = ({ experience, deleteExperience, history }) => {
             </Modal>
             
         </Row>
-    );
+    ) : null;
 };
 
 Experience.propTypes = {
@@ -143,7 +143,7 @@ Experience.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    experience: state.profile.profile.experience
+    experience: state.profile.profile === null ? [] : state.profile.profile.experience
 });
 
 export default connect(

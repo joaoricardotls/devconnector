@@ -28,7 +28,7 @@ const Register = ({
         return () => {
             if (alerts.length > 0) clearAlert();
         };
-    }, []);
+    }, [clearAlert, alerts.length]);
 
     const handleChange = (event) => {
         event.preventDefault();

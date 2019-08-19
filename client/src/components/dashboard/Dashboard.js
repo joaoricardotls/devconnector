@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getCurrentProfile } from "../../actions/profile";
+import { getCurrentProfile, deleteAccount } from "../../actions/profile";
 
 import DashboardButtons from './DashboardButtons';
 import Experience from './Experience';
@@ -17,6 +17,9 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const buff = new Buffer.from('hello world')
+console.log(buff)
+
 const Dashboard = ({
         auth: {
             user
@@ -25,12 +28,18 @@ const Dashboard = ({
             profile,
             loading
         },
-        getCurrentProfile
+        getCurrentProfile,
+        deleteAccount
     }) => {
 
     useEffect(() => {
         getCurrentProfile();
     }, []);
+
+    const handleDeleteAccount = (event) => {
+        event.preventDefault();
+        deleteAccount();
+    };
 
     return loading && profile === null ? <SpinnerComponent/> : (
 
@@ -54,8 +63,8 @@ const Dashboard = ({
             {
                 profile !== null ?
 
-                    <DashboardButtons/>     :
-
+                    <DashboardButtons/> : (
+                        loading ? <SpinnerComponent/> : (
                     <>
                     <Row className="text-center mt-5">
                         <span className="mx-auto">You have not yet set up a profile</span>
@@ -70,11 +79,23 @@ const Dashboard = ({
                         
                     </Row>
                     </>
+                    ))
+            }
+            {
+                <>
+                <Experience/>
+                <Education/>
+                </>
             }
 
-            <Experience/>
-
-            <Education/>
+            <Row className="my-5">
+                <Button variant="danger"
+                        className="px-4"
+                        onClick={ e => handleDeleteAccount(e) }>
+                        <FontAwesomeIcon icon="user-minus"/>
+                        <span className="ml-3">Delete Account</span>
+                </Button>
+            </Row>
 
         </Container>
     );
@@ -82,6 +103,7 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
+    deleteAccount: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired
 };
@@ -92,5 +114,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-    getCurrentProfile
+    getCurrentProfile,
+    deleteAccount
 })(Dashboard);

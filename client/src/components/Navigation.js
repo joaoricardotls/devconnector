@@ -22,6 +22,13 @@ const Navigation = ({
     const authLinks = (
         <Nav className="mr-auto">
             <Nav.Item className="ml-3">
+                <NavLink to="/profiles"
+                         className="nav-link">
+                    <FontAwesomeIcon icon="users"/>
+                    <span style={{marginLeft: "0.5rem"}}>Developers</span>
+                </NavLink>
+            </Nav.Item>
+            <Nav.Item className="ml-3">
                 <NavLink to="/dashboard"
                          className="nav-link">
                     <FontAwesomeIcon icon="laptop-code"/>
@@ -41,9 +48,9 @@ const Navigation = ({
     const guestLinks = (
         <Nav className="mr-auto">
             <Nav.Item className="ml-3">
-                <NavLink to="/users"
+                <NavLink to="/profiles"
                          className="nav-link">
-                    <FontAwesomeIcon icon="code"/>
+                    <FontAwesomeIcon icon="users"/>
                     <span style={{marginLeft: "0.5rem"}}>Developers</span>
                 </NavLink>
             </Nav.Item>

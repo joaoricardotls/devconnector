@@ -5,9 +5,15 @@ import {
 
 import {
     GET_PROFILE,
+    GET_PROFILES,
     PROFILE_ERROR,
-    UPDATE_PROFILE
+    UPDATE_PROFILE,
+    DELETE_ACCOUNT,
+    CLEAR_PROFILE,
+    GET_REPOS
 } from './types';
+
+import dispatchProfileError from '../utilities/dispatchProfileError';
 
 // Get current users profile
 export const getCurrentProfile = () => async dispatch => {
@@ -19,13 +25,77 @@ export const getCurrentProfile = () => async dispatch => {
             payload: res.data
         });
     } catch (err) {
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
+    };
+};
+
+// Get all profiles
+export const getAllProfiles = () => async dispatch => {
+
+    dispatch({ type: CLEAR_PROFILE })
+
+    try {
+        const res = await axios.get('/api/profile');
         dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
+            type: GET_PROFILES,
+            payload: res.data
         });
+    } catch (err) {
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
+    };
+};
+
+// Get profile by ID
+export const getProfileByUserId = userId => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/user/${userId}`);
+        dispatch({
+            type: GET_PROFILE,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
+    };
+};
+
+// Get Github repos
+export const getGithubRepos = username => async dispatch => {
+    try {
+        const res = await axios.get(`/api/profile/github/${username}`);
+        dispatch({
+            type: GET_REPOS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
     };
 };
 
@@ -60,13 +130,14 @@ export const createProfile = (formData, history, edit = false) => async dispatch
             });
         };
 
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
-        });
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
     };
 };
 
@@ -100,13 +171,14 @@ export const addExperience = (formData, history) => async dispatch => {
             });
         };
 
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
-        });
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
     };
 };
 
@@ -140,13 +212,14 @@ export const addEducation = (formData, history) => async dispatch => {
             });
         };
 
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
-        });
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
     };
 };
 
@@ -181,13 +254,14 @@ export const deleteExperience = (id, history) => async dispatch => {
             });
         };
 
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
-        });
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
     };
 };
 
@@ -222,12 +296,47 @@ export const deleteEducation = (id, history) => async dispatch => {
             });
         };
 
-        dispatch({
-            type: PROFILE_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.status
-            }
-        });
+        dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
+    };
+};
+
+// Delete account and profile
+export const deleteAccount = () => async dispatch => {
+
+    if (window.confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+        try {
+            await axios.delete('/api/profile');
+
+            dispatch({ type: CLEAR_PROFILE });
+            dispatch({ type: DELETE_ACCOUNT });
+
+            dispatch(setAlert('Account Deleted', 'secondary'));
+
+        } catch (err) {
+
+            const errors = err.response.data.errors;
+
+            if (errors) {
+                errors.forEach(error => {
+                    dispatch(setAlert(error.msg, 'danger'));
+                });
+            };
+
+            dispatchProfileError(dispatch, PROFILE_ERROR, err);
+        // dispatch({
+        //     type: PROFILE_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.status
+        //     }
+        // });
+        };
     };
 };
