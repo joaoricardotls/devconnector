@@ -10,6 +10,7 @@ import {
     UPDATE_PROFILE,
     DELETE_ACCOUNT,
     CLEAR_PROFILE,
+    CLEAR_PROFILES,
     GET_REPOS
 } from './types';
 
@@ -57,6 +58,11 @@ export const getAllProfiles = () => async dispatch => {
         //     }
         // });
     };
+};
+
+// Clear all profiles from state
+export const clearProfiles = () => dispatch => {
+    dispatch({ type: CLEAR_PROFILES });
 };
 
 // Get profile by ID

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Container, Col, Row, Image, Button, Card, Badge } from 'react-bootstrap';
 
 const ProfileItem = ({ profile }) => {
@@ -22,12 +23,24 @@ const ProfileItem = ({ profile }) => {
                                     <Card.Title>
                                         { profile.status }
                                     </Card.Title>
-                                    <Card.Text>
-                                        { profile.location }
-                                    </Card.Text>
-                                    <Button variant="primary">
-                                        View Profile
-                                    </Button>
+                                    {
+                                        profile.company &&
+                                        <Card.Text>
+                                            { profile.company }
+                                        </Card.Text>
+                                    }
+                                    {
+                                        profile.location &&
+                                        <Card.Text>
+                                            { profile.location }
+                                        </Card.Text>
+                                    }
+                                    <Link to={`/profile/${profile.user._id}`}
+                                          className="mx-auto">
+                                        <Button>
+                                            View profile
+                                        </Button>
+                                    </Link>
                                 </Col>
                                 <Col>
                                     <Card.Text as="h5" className="d-flex flex-wrap">
@@ -53,7 +66,7 @@ const ProfileItem = ({ profile }) => {
 }
 
 ProfileItem.propTypes = {
-    profile: PropTypes.array.isRequired
+    profile: PropTypes.object.isRequired
 }
 
 export default ProfileItem

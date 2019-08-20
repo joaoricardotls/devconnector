@@ -3,6 +3,7 @@ import {
     GET_PROFILES,
     PROFILE_ERROR,
     CLEAR_PROFILE,
+    CLEAR_PROFILES,
     UPDATE_PROFILE,
     GET_REPOS
 } from "../actions/types";
@@ -54,6 +55,13 @@ export default function(state = initialState, action) {
                 ...state,
                 profile: null,
                 repos: [],
+                loading: false
+            };
+
+        case CLEAR_PROFILES:
+            return {
+                ...state,
+                profiles: [],
                 loading: false
             };
 

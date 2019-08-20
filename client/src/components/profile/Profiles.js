@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import SpinnerComponent from '../dashboard/SpinnerComponent';
 import ProfileItem from './ProfileItem';
-import { getAllProfiles } from '../../actions/profile';
+import { getAllProfiles, clearProfiles } from '../../actions/profile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Profiles = ({
@@ -12,12 +12,14 @@ const Profiles = ({
             profiles,
             loading
         },
-        getAllProfiles
+        getAllProfiles,
+        clearProfiles
     }) => {
 
     useEffect(() => {
         getAllProfiles();
-    }, [getAllProfiles]);
+        return () => clearProfiles()
+    }, [getAllProfiles, clearProfiles]);
 
     return loading ? <SpinnerComponent/> : (
 
@@ -51,6 +53,7 @@ const Profiles = ({
 
 Profiles.propTypes = {
     getAllProfiles: PropTypes.func.isRequired,
+    clearProfiles: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired
 };
 
@@ -60,6 +63,7 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, {
-        getAllProfiles
+        getAllProfiles,
+        clearProfiles
     }
 )(Profiles);
