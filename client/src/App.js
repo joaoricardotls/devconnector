@@ -32,16 +32,11 @@ import {
     faSignInAlt,
     faCode,
     faSignOutAlt,
-    faLaptopCode
+    faLaptopCode,
+    faGlobe
 } from "@fortawesome/free-solid-svg-icons";
-import {
-    faFacebookSquare,
-    faLinkedin,
-    faInstagram,
-    faYoutube,
-    faTwitterSquare
-} from "@fortawesome/free-brands-svg-icons";
 library.add(
+    faGlobe,
     faUser,
     faUsers,
     faUserMinus,
@@ -49,12 +44,7 @@ library.add(
     faSignInAlt,
     faCode,
     faSignOutAlt,
-    faLaptopCode,
-    faFacebookSquare,
-    faLinkedin,
-    faInstagram,
-    faYoutube,
-    faTwitterSquare
+    faLaptopCode
 );
 
 if (localStorage.token) setAuthToken(localStorage.token);
