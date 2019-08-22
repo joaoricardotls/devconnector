@@ -29,6 +29,13 @@ const Navigation = ({
                 </NavLink>
             </Nav.Item>
             <Nav.Item className="ml-3">
+                <NavLink to="/posts"
+                         className="nav-link">
+                    <FontAwesomeIcon icon="comments"/>
+                    <span style={{marginLeft: "0.5rem"}}>Posts</span>
+                </NavLink>
+            </Nav.Item>
+            <Nav.Item className="ml-3">
                 <NavLink to="/dashboard"
                          className="nav-link">
                     <FontAwesomeIcon icon="laptop-code"/>

@@ -15,6 +15,7 @@ import AddEducation from './components/profile/AddEducation';
 import AddExperience from './components/profile/AddExperience';
 import UserProfile from "./components/userprofile/Profile";
 import PrivateRoute from './components/routing/PrivateRoute';
+import Posts from './components/posts/Posts';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -33,18 +34,26 @@ import {
     faCode,
     faSignOutAlt,
     faLaptopCode,
-    faGlobe
+    faGlobe,
+    faComments,
+    faThumbsUp,
+    faHandPointRight,
+    faTimes
 } from "@fortawesome/free-solid-svg-icons";
 library.add(
-    faGlobe,
     faUser,
-    faUsers,
     faUserMinus,
+    faUsers,
     faDoorOpen,
     faSignInAlt,
     faCode,
     faSignOutAlt,
-    faLaptopCode
+    faLaptopCode,
+    faGlobe,
+    faComments,
+    faThumbsUp,
+    faHandPointRight,
+    faTimes
 );
 
 if (localStorage.token) setAuthToken(localStorage.token);
@@ -85,6 +94,8 @@ const App = () => {
                                   component={ AddExperience }/>
                     <PrivateRoute exact path="/add-education"
                                   component={ AddEducation }/>
+                    <PrivateRoute exact path="/posts"
+                                  component={ Posts }/>
                 </Switch>
                 
         </Router>
