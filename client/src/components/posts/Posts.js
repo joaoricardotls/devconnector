@@ -6,64 +6,12 @@ import SpinnerComponent from '../dashboard/SpinnerComponent';
 import { getPosts } from '../../actions/post';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PostItem from '../posts/PostItem';
-import { setAlert } from '../../actions/alert';
 
-const Posts = ({ post: { posts, loading }, auth, getPosts, setAlert }) => {
+const Posts = ({ post: { posts, loading }, getPosts }) => {
 
     useEffect(() => {
         getPosts();
     }, [getPosts]);
-
-    const handlers = {
-
-        toggleLikePost: (event, id) => {
-            event.preventDefault();
-            setAlert({
-                msg: `Post Liked. Post ID: ${id}`,
-                alertType: 'success'
-            });
-        },
-    
-        deletePost: (event, id) => {
-            event.preventDefault();
-            setAlert({
-                msg: `Post Deleted. Post ID: ${id}`,
-                alertType: 'secondary'
-            });
-        },
-    
-        viewDiscussion: (event, id) => {
-            event.preventDefault();
-            setAlert({
-                msg: `Show Discussion. Post ID: ${id}`,
-                alertType: 'primary'
-            });
-        }
-    };
-
-    const handleLikeAndUnlike = (event, id) => {
-        event.preventDefault();
-        setAlert({
-            msg: `Post Liked. Post ID: ${id}`,
-            alertType: 'success'
-        });
-    };
-
-    const handleDeletePost = (event, id) => {
-        event.preventDefault();
-        setAlert({
-            msg: `Post Deleted. Post ID: ${id}`,
-            alertType: 'secondary'
-        });
-    };
-
-    const handleViewDiscussion = (event, id) => {
-        event.preventDefault();
-        setAlert({
-            msg: `Show Discussion. Post ID: ${id}`,
-            alertType: 'primary'
-        });
-    };
 
     return loading ? <SpinnerComponent/> : (
 
@@ -91,10 +39,6 @@ const Posts = ({ post: { posts, loading }, auth, getPosts, setAlert }) => {
                     posts.map( post =>
                         <PostItem key={ post._id }
                                   post={ post }
-                                  deletePost={ handleDeletePost }
-                                  viewDiscussion={ handleViewDiscussion }
-                                  toggleLikePost={ handleLikeAndUnlike }
-                                  loggedUser={ auth.user }
                                   />
                     )
                 }
@@ -107,19 +51,15 @@ const Posts = ({ post: { posts, loading }, auth, getPosts, setAlert }) => {
 
 Posts.propTypes = {
     getPosts: PropTypes.func.isRequired,
-    setAlert: PropTypes.func.isRequired,
-    post: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    post: state.post,
-    auth: state.auth
+    post: state.post
 });
 
 export default connect(
     mapStateToProps, {
-        getPosts,
-        setAlert
+        getPosts
     }
 )(Posts);

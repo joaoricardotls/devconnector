@@ -1,18 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Image, Row, Col, Button, Badge } from 'react-bootstrap';
 import Moment from 'react-moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toggleLikePost } from '../../actions/post';
+import SpinnerComponent from '../dashboard/SpinnerComponent';
 
 const PostItem = ({
-        loggedUser,
         post,
-        deletePost,
-        viewDiscussion,
+        auth,
         toggleLikePost
     }) => {
 
-    return (
+    const handleToggleLikePost = (event, id) => {
+        event.preventDefault();
+        toggleLikePost(id)
+    };
+
+    const handleViewDiscussion = (event, id) => {
+        event.preventDefault();
+        return null;
+    };
+
+    const handleDeletePost = (event, id) => {
+        event.preventDefault();
+        return null;
+    };
+
+    return auth.loading || auth.user === null ? <SpinnerComponent/> : (
         <Row className="mb-2 w-100">
             <Col xs={3} className="border p-3 bg-light d-flex flex-column justify-content-center align-items-center">
                 <Image src={ post.avatar }
@@ -35,21 +52,21 @@ const PostItem = ({
                 </p>
 
                 <div>
-                    <Button variant={ post.likes.some(p => p.user === loggedUser._id) ? 'primary' : 'secondary' }
+                    <Button variant={ post.likes.some(p => p.user === auth.user._id) ? 'success' : 'secondary' }
                             className="mr-2"
                             title="Like / Unlike Post"
-                            onClick={ e => toggleLikePost(e, post._id) }
+                            onClick={ e => handleToggleLikePost(e, post._id) }
                             >
-                        <FontAwesomeIcon icon={ post.likes.some(p => p.user === loggedUser._id) ? 'thumbs-up' : 'hand-point-right' }/>
-                        <span className="mx-2">Like</span>
-                        <Badge variant={ post.likes.some(p => p.user === loggedUser._id) ? 'primary' : 'secondary' }>
+                        <FontAwesomeIcon icon={ post.likes.some(p => p.user === auth.user._id) ? 'thumbs-up' : 'hand-point-right' }/>
+                        <span className="mx-2">{ post.likes.some(p => p.user === auth.user._id) ? 'Liked!' : 'Like' }</span>
+                        <Badge variant={ post.likes.some(p => p.user === auth.user._id) ? 'success' : 'secondary' }>
                             { post.likes.length }
                         </Badge>
                     </Button>
                     <Button variant="info"
                             className="mr-2"
                             title="View Discussion"
-                            onClick={ e => viewDiscussion(e, post._id) }
+                            onClick={ e => handleViewDiscussion(e, post._id) }
                             >
                         <FontAwesomeIcon icon="comments"/>
                         <span className="mx-2">Discussion</span>
@@ -58,12 +75,12 @@ const PostItem = ({
                         </Badge>
                     </Button>
                 {
-                    loggedUser !== null &&
-                    loggedUser._id === post.user &&
+                    auth.user !== null &&
+                    auth.user._id === post.user &&
                     <Button variant="danger"
                             className=""
                             title="Delete Post"
-                            onClick={ e => deletePost(e, post._id) }
+                            onClick={ e => handleDeletePost(e, post._id) }
                             >
                         <FontAwesomeIcon icon="times"/>
                     </Button>
@@ -76,10 +93,17 @@ const PostItem = ({
 };
 
 PostItem.propTypes = {
-    post: PropTypes.object.isRequired,
-    deletePost: PropTypes.func.isRequired,
-    viewDiscussion: PropTypes.func.isRequired,
-    toggleLikePost: PropTypes.func.isRequired
+    toggleLikePost: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    post: PropTypes.object.isRequired
 };
 
-export default PostItem;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+    mapStateToProps, {
+        toggleLikePost
+    }
+)(withRouter(PostItem));
