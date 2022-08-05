@@ -20,7 +20,7 @@
     "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
     "mem": ">=4.0.0",
-    "mongoose": "^5.6.9",
+    "mongoose": "^5.7.5",
     "request": "^2.88.0"
   },
   "devDependencies": {
